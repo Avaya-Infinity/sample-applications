@@ -1,4 +1,4 @@
-# Avaya Infinity - Twilio SMS Connector
+# Avaya Infinity - Sample Twilio SMS Connector
 
 A Node.js application that connects Twilio SMS services with Avaya Infinity, enabling seamless two-way SMS communication between customers and contact center agents.
 
@@ -9,17 +9,16 @@ This connector acts as a bridge between two communication platforms:
 - **Twilio**: Handles SMS messaging with customers
 - **Avaya Infinity**: Manages contact center communications with agents
 
-When a customer sends an SMS to your Twilio number, it automatically forwards to Avaya Infinity where agents can respond. When agents reply through Avaya Infinity, the message is sent back to the customer via SMS.
+When a customer sends an SMS to your Twilio number, it automatically forwards to Avaya Infinity where an interaction is created and an appropriate treatment is decided by the routing configurations done for the same Twilio number in Avaya Infinity Admin Console. Using a workflow, a response can be sent back to the customer or the interaction can be routed to an agent for further assistance. Any replies from the contact center will be sent back to the customer via this connector through Twilio.
 
 ## Key Features
 
 - **Bi-directional SMS forwarding** between Twilio and Avaya Infinity
-- **Real-time webhook processing** for instant message delivery
 - **Secure signature validation** to verify authentic requests
 - **Dynamic configuration management** via REST API
 - **Mock mode support** for testing without actual services
-- **Health monitoring** endpoints for deployment monitoring
-- **Colorful logging** for better debugging experience
+- **Health monitoring** to test server status
+- **Token management** with automatic refresh for Avaya Infinity API
 
 ## Quick Start
 
@@ -28,51 +27,50 @@ When a customer sends an SMS to your Twilio number, it automatically forwards to
 - Node.js 18+ installed on your system
 - Twilio account with SMS capabilities
 - Avaya Infinity platform access
-- Basic understanding of webhooks
 
 ### Installation
 
 1. **Clone and install:**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Avaya-Infinity/sample-applications.git
    cd avaya-infinity-twilio-sms-connector
    npm install
    ```
 
-2. **Configure environment:**
+2. **Edit your environment file** (.env.dev) with your credentials (optional):
+
+  Provide details about your Avaya Infinity Connector and Twilio account. See the details of each field in the [Environment Variables](#environment-variables) section. Note: This step is optional. You can set the configuration details at runtime (after starting the service) using the [Configuration API](#update-configuration)
+3. **Start the application:**
+
+  To start the application:
 
    ```bash
-   cp .env.example .env.dev
+   npm start
    ```
 
-3. **Edit your environment file** (.env.dev) with your credentials:
-
-   ```env
-   # Server Configuration
-   PORT=8081
-   ENV=development
-   
-   # Twilio Configuration
-   TWILIO_ACCOUNT_SID=your_twilio_account_sid
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   
-   # Avaya Infinity Configuration
-   AVAYA_INFINITY_HOST=your-avaya-host.com
-   AVAYA_INFINITY_CLIENT_ID=your_client_id
-   AVAYA_INFINITY_CLIENT_SECRET=your_client_secret
-   AVAYA_INFINITY_CONNECTOR_ID=your_connector_id
-   AVAYA_INFINITY_WEBHOOK_SECRET=your_webhook_secret
-   ```
-
-4. **Start the application:**
+  Or, to run the application in development mode with auto-reload:
 
    ```bash
    npm run dev
    ```
 
-5. **Verify it's running:**
+4. **Verify it's running:**
+
    Open `http://localhost:8081/api/health` in your browser
+
+5. **Set up webhooks:**
+
+   - In Twilio Console, set the SMS webhook URL to `http://<your-server>/callbacks/twilio/sms`
+   - In Avaya Infinity Admin Console, set the SMS webhook URL to `http://<your-server>/callbacks/avaya/infinity/sms`
+
+6. **Configure Twilio number in Avaya Infinity** Admin Console
+
+    Add the Twilio number in the 'Numbers' section, associate it with the connector, and set the desired routing treatment.
+
+7. **Test SMS flow**
+
+   Send an SMS to your Twilio number and verify it is treated as per your Avaya Infinity Number configuration. If it is routed to an agent, the agent should be able to view the message sent by the customer and reply back.
 
 ## API Reference
 
@@ -105,7 +103,8 @@ Content-Type: application/json
 {
   "twilio": {
     "account": {
-      "sid": "your_twilio_account_sid"
+      "sid": "your_twilio_account_sid",
+      "authToken": ""
     },
     "apiKey": {
       "sid": "your_api_key_sid",

@@ -13,6 +13,8 @@ export const PORT = process.env.PORT || 3000;
 const isMockMode = (service) => 
   process.env.ENV === 'mock_all' || process.env.ENV === `mock_${service}`;
 
+const isAvayaMockMode = isMockMode('avaya') || !process.env.AVAYA_INFINITY_HOST || process.env.AVAYA_INFINITY_CLIENT_ID.trim() === '';
+
 /**
  * The configuration object contains settings for 
  * Twilio and Avaya Infinity services.
@@ -38,7 +40,7 @@ export const config = {
     clientSecret: process.env.AVAYA_INFINITY_CLIENT_SECRET,
     connectorId: process.env.AVAYA_INFINITY_CONNECTOR_ID,
     webhookSecret: process.env.AVAYA_INFINITY_WEBHOOK_SECRET,
-    isMockMode: isMockMode('avaya')
+    isMockMode: isAvayaMockMode
   }
 };
 
@@ -67,6 +69,10 @@ export const updateConfig = (newConfig) => {
         changed = true;
       }
     }
+
+    const avayaHost = newConfig.avaya.host;
+    // Set isMockMode to true if avayaHost is falsy or blank
+    target.isMockMode = !avayaHost || avayaHost.trim() === '';
     
     return changed;
   };
