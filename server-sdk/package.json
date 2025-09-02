@@ -1,0 +1,48 @@
+{
+  "name": "avaya-infinity-server-sdk",
+  "version": "1.0.0",
+  "description": "SDK for interacting with Avaya Infinity messaging services",
+  "main": "dist/avaya-infinity-server-sdk.cjs",
+  "module": "dist/avaya-infinity-server-sdk.js",
+  "exports": {
+    "import": "./dist/avaya-infinity-server-sdk.js",
+    "require": "./dist/avaya-infinity-server-sdk.cjs"
+  },
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "./build.sh",
+    "build:types": "tsc",
+    "build:bundle": "npx rollup -c",
+    "test": "jest",
+    "test:usage": "./test.sh",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "avaya",
+    "infinity",
+    "messaging",
+    "sdk"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@types/jest": "^29.5.11",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/node": "^20.11.0",
+    "jest": "^29.7.0",
+    "rollup": "^4.50.0",
+    "ts-jest": "^29.1.1",
+    "tslib": "^2.8.1",
+    "typescript": "^5.3.3"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}
