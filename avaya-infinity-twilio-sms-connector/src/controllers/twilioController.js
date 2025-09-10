@@ -21,7 +21,7 @@ export const handleTwilioWebhook = async (req, res) => {
     // Forward message to Avaya Infinity
     const message = {
       connectorId: config.avaya.connectorId,
-      channel: 'SMS',
+      channel: 'text',
       headers: {
         from: twilioMessage.From,
         to: [twilioMessage.To],
@@ -31,7 +31,7 @@ export const handleTwilioWebhook = async (req, res) => {
         text: twilioMessage.Body
       },
       contextParameters: {
-        category: 'insurance',
+        category: 'insurance', // as an example
         toCountryCode: twilioMessage.ToCountryCode,
         toState: twilioMessage.ToState,
         toCity: twilioMessage.ToCity,

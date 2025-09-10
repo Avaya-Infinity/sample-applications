@@ -28,12 +28,12 @@ export const handleAvayaWebhook = async (req, res) => {
   console.debug('--------------------------------------------');
 
   switch (body.eventType) {
-    case 'HEALTH_CHECK':
+    case 'health_check':
       // Simply acknowledge health check events
       console.info('Received health check event from Avaya Infinity');
       return res.status(200).send('OK');
 
-    case 'MESSAGES': {
+    case 'messages': {
       // Handle message event comming from Avaya Infinity
       const from = body.headers.from;
       const to = body.headers.to[0];
