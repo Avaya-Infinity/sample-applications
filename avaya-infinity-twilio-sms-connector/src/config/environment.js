@@ -69,10 +69,6 @@ export const updateConfig = (newConfig) => {
         changed = true;
       }
     }
-
-    const avayaHost = newConfig.avaya.host;
-    // Set isMockMode to true if avayaHost is falsy or blank
-    target.isMockMode = !avayaHost || avayaHost.trim() === '';
     
     return changed;
   };
@@ -85,6 +81,8 @@ export const updateConfig = (newConfig) => {
   // Update Avaya config if provided
   if (newConfig.avaya) {
     avayaChanged = updateNestedConfig(config.avaya, newConfig.avaya);
+    const avayaHost = newConfig.avaya.host;
+    config.avaya.isMockMode = !avayaHost || avayaHost.trim() === '';
   }
 
   return { twilioChanged, avayaChanged };

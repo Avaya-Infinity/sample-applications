@@ -44,7 +44,7 @@ export const handleAvayaWebhook = async (req, res) => {
       console.info('Received message from Avaya Infinity:', { messageId, from, to, senderType });
 
       // If the sender is customer, simply acknowledge the event
-      if (senderType === 'CUSTOMER') {
+      if (senderType === 'customer') {
         console.info('Ignoring message from customer:', { messageId, from, to });
         return res.status(200).send('OK');
       }

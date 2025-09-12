@@ -84,6 +84,9 @@ typings/
 # DynamoDB Local files
 .dynamodb/
 
+# VS Code
+.vscode/
+
 # OS generated files
 .DS_Store
 .DS_Store?
