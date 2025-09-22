@@ -181,29 +181,79 @@ The Sample Connector Application exposes the following APIs:
 
 #### Health Check
 
+Check if the application is running.
+
 ```http
-GET /api/health
+GET {{your-connector-hostname}}/api/health
 ```
 
-Returns server status and timestamp.
+cURL example:
+
+```curl
+curl -X GET {{your-connector-hostname}}/api/health
+```
+
+Response example:
+
+```json
+{
+  "status": "healthy",
+  "timestamp": "2025-09-22T04:17:44.168Z",
+  "service": "avaya-infinity-twilio-sms-connector"
+}
+```
 
 ### Configuration Management
 
 #### Get Current Configuration
 
+Get the current Twilio and Avaya Infinity™ configurations set in the connector application.
+
 ```http
-GET /api/configs
+GET {{your-connector-hostname}}/api/configs
 ```
 
-Returns current configuration with sensitive values masked.
+Response example:
+
+```json
+{
+    "success": true,
+    "config": {
+        "twilio": {
+            "account": {
+                "sid": "you***id",
+                "authToken": "you***en"
+            },
+            "apiKey": {
+                "sid": "you***id",
+                "secret": "you***et"
+            },
+            "isMockMode": true
+        },
+        "avaya": {
+            "host": "https://avaya-infinity-hostname",
+            "accountId": "your_avaya_infinity_account_id",
+            "clientId": "ava***ck",
+            "clientSecret": "ava***ck",
+            "connectorId": "your_avaya_infinity_connector_id",
+            "webhookSecret": "you***et",
+            "isMockMode": false
+        }
+    }
+}
+```
 
 #### Update Configuration
 
 ```http
-POST /api/configs
+POST {{your-connector-hostname}}/api/configs
 Content-Type: application/json
+```
 
-{
+cURL example:
+
+```curl
+curl -X POST {{your-connector-hostname}}/api/configs -H "Content-Type: application/json" -d '{
   "twilio": {
     "account": {
       "sid": "your_twilio_account_sid",
@@ -226,78 +276,86 @@ Content-Type: application/json
 }
 ```
 
+Response example:
+Same as the [Get Current Configuration](#get-current-configuration) response example.
+
 ### Webhook Endpoints
 
-#### Twilio SMS Webhook
+#### Twilio SMS Webhook Endpoint
 
 ```http
 POST /callbacks/twilio/sms
 Content-Type: application/x-www-form-urlencoded
-
-From=+1234567890&Body=Hello&MessageSid=SM123...
 ```
 
-#### Avaya Infinity™ Webhook
+cURL example:
+
+```curl
+curl -X POST {{your-connector-hostname}}/callbacks/twilio/sms -H "Content-Type: application/x-www-form-urlencoded" -d 'Body=message from twilio&To=+912121212121&From=+18777777777'
+```
+
+Response example:
+
+```http
+200 OK
+```
+
+#### Avaya Infinity™ Webhook Endpoint
 
 ```http
 POST /callbacks/avaya/infinity/sms
 Content-Type: application/json
-x-avaya-event-signature: sha256=...
+```
 
-{
-  "eventType": "MESSAGES"
+cURL example:
+
+```curl
+curl -X POST {{your-connector-hostname}}/callbacks/avaya/infinity/sms -H "Content-Type: application/json" -d '{
+  "eventType": "MESSAGES",
   "messageId": "004e0708206c0d3db4807g6bj7",
   "accountId": "001d010540de0d3db4302f5fa8",
   "conversationSessionId": "005e0708206c0d3db4807g6bj7",
   "connectorId": "591c2529-c3a3-4062-a213-b239c18f543b",
-  "channel": "TEXT",
+  "channel": "text",
   "headers": {
-    "from": 1234567890,
+    "from": "+15076981583",
     "to": [
-      1234567890
+      "+919890494090"
     ]
   },
   "body": {
-    "text": "Hi, how can I help you?"
+    "text": "Hi agent from postman 01, using the azure instance of connector, how can I help you?"
   },
   "sender" : {
     "type": "AGENT"
   }
-}
+}'
+```
+
+Response example:
+
+```http
+200 OK
 ```
 
 ## Testing & Development
 
-### Mock Mode
+### Twilio Mock Mode
 
-For testing without actual Twilio services, set environment variables:
+The connector application can be run in Twilio Mock Mode to test the SMS flow without any real Twilio services. Here is how the mock mode can be used:
 
-```env
-ENV=mock_twilio        # Mock only Twilio
-```
+- **Incoming SMS**: You can invoke the [Twilio SMS Webhook Endpoint](#twilio-sms-webhook-endpoint) endpoint to simulate incoming SMS from the end user.
+- **Outgoing SMS**: On receiving an SMS from Avaya Infinity™, the connector application will return a success without actually forwarding the message to Twilio.
 
-## Deployment
+This is useful for quickly testing the application.
 
-### Local Deployment
+To enable Twilio Mock Mode, update the `twilio.isMockMode` to `true` in the [Connector Configuration](#update-configuration).
 
-```bash
-npm start
-```
+Each step in the [Quick Start](#quick-start) section has information to enable Twilio Mock Mode.
 
-### Azure Web App Deployment
+### Running the Sample Application without Deploying it to a Publicly Accessible Location
 
-The application can be deployed to Azure App Service:
-
-1. **Configure App Settings** in Azure Portal with your environment variables
-2. **Deploy** using GitHub Actions, Azure CLI, or VS Code
-3. **Set webhook URLs** in Twilio and Avaya Infinity™ to point to your Azure app
-
-## Security Features
-
-- **HMAC signature validation** for Avaya Infinity™ webhooks
-- **Credential masking** in API responses
-- **Environment-based configuration** (no hardcoded secrets)
-- **Secure token management** with automatic refresh
+The sample connector application needs to receive callback requests from Avaya Infinity™ and Twilio. If you want to run the sample application without deploying it to a publically accessible location, you can use tools like [ngrok](https://ngrok.com/) to create a public URL for your local server.
 
 ## Environment Variables
 
