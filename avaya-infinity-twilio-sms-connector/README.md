@@ -2,7 +2,7 @@
 
 ## Overview
 
-Avaya Infinity™ provides **Custom Messaging** capabilities that enable contact centers to connect with any third-party messaging platform for sending and receiving SMS messages. 
+Avaya Infinity™ provides **Custom Messaging** capabilities that enable contact centers to connect with any third-party messaging platform for sending and receiving SMS messages.
 
 To bridge these platforms, you need a small **connector** application. The connector serves as a two-way bridge:
 
@@ -12,6 +12,10 @@ To bridge these platforms, you need a small **connector** application. The conne
 This sample application demonstrates how to build such a connector, specifically integrating Avaya Infinity™ with [Twilio SMS Messaging](https://www.twilio.com/en-us/messaging/channels/sms).
 
 > [!TIP] Find detailed Custom Messaging documentation in the [Avaya Developer Portal](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
+
+> [!IMPORTANT] This sample application is intended to be used as a reference for building your own connector application. It is not intended to be used in a production environment.
+
+You can refer this application code for building your own connector application and connect to any other messaging platform. Refer the [Code Structure](#code-structure) section for more details.
 
 ## What This App Does
 
@@ -24,7 +28,7 @@ The flow of incoming SMS from the end user to the contact center is as follows:
 To handle the incoming SMS the Connector will:
 
 1. Expose a webhook endpoint to receive SMS from Twilio and configure the webhook URL in Twilio Console against the Twilio Number
-2. When an end user sends an SMS to the Twilio number, the connector will receive it as a Webhook event on the above webhook endpoint, process it and forward it to Avaya Infinity™ using the `Send Message` API.
+2. When an end user sends an SMS to the Twilio number, the connector will receive it as a Webhook event on the above webhook endpoint, process it and forward it to Avaya Infinity™ using the [`Send Message`](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) API.
 
 ### Handle Outgoing SMS to (Contact Center → End User)
 
@@ -35,7 +39,7 @@ The flow of outgoing SMS from the contact center to the end user is as follows:
 To handle the outgoing SMS the Connector will:
 
 1. Expose a webhook endpoint to receive SMS from Avaya Infinity™ and configure the webhook URL in Avaya Infinity™ Admin Console in the Connector Configuration
-2. When the contact center sends an SMS for the end user using the Twilio number, the connector will receive the SMS as a Webhook event on the above webhook endpoint, process it and forward it to Twilio using Twilio APIs for sending SMS.
+2. When the contact center sends an SMS for the end user using the Twilio number, the connector will receive the SMS as a Webhook event on the above webhook endpoint. Process the [`messages` event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) it and forward it to Twilio using Twilio APIs for sending SMS.
 
 ### Additional Features
 
@@ -67,13 +71,7 @@ To handle the outgoing SMS the Connector will:
    npm install
    ```
 
-2. **Edit your environment file** (.env.dev) with your credentials (optional):
-
-    Provide details about your Avaya Infinity™ Connector and Twilio account. See the details of each field in the [Environment Variables](#environment-variables) section. 
-
-    >[!Note] This step is optional. You can set the configuration details at runtime (after starting the service) using the [Configuration API](#update-configuration)
-
-3. **Start the application:**
+2. **Start the application:**
 
     To start the application:
 
@@ -87,7 +85,7 @@ To handle the outgoing SMS the Connector will:
     npm run dev
     ```
 
-4. **Verify the application is running locally:**
+3. **Verify the application is running locally:**
 
    Open `http://localhost:8081/api/health` in your browser. You should see the following response:
 
@@ -99,11 +97,11 @@ To handle the outgoing SMS the Connector will:
     }
     ```
 
-5. **Deploy the application:**
+4. **Deploy the application:**
 
     For both Avaya Infinity™ and Twilio to be able call this connector application's endpoints to send message events, you need to deploy the application to a publically accessible URL.
 
-    Alternatively, you can use a tool like [ngrok](https://ngrok.com/) to create a public URL for your local server.
+    However, you can use a tool like [ngrok](https://ngrok.com/) to create a public URL for your local server to test the application locally.
 
     Once you have deployed the application, you can note down the Callback URLs for both Avaya Infinity™ and Twilio.
 
@@ -111,11 +109,11 @@ To handle the outgoing SMS the Connector will:
     - Avaya Infinity™: `https://my-connector.com/callbacks/avaya/infinity/sms`
     - Twilio: `https://my-connector.com/callbacks/twilio/sms`
 
-6. **Configure Twilio**
+5. **Configure Twilio**
 
-    In Twilio Console, set the `Webhook URL` for your Twilio SMS numberto the Callback URL for Twilio noted above. (For example: `https://my-connector.com/callbacks/twilio/sms`)
+    In Twilio Console, set the `Webhook URL` for your Twilio SMS number to the Callback URL for Twilio hosted ny the connector application noted above. (For example: `https://my-connector.com/callbacks/twilio/sms`)
 
-    Note down the follwoing details from Twilio Console:
+    Note down the following details from Twilio Console:
     - `Twilio Number`
     - `Twilio Account SID`
     - `Twilio Auth Token` (optional: if Twilio API Key is not created)
@@ -124,24 +122,24 @@ To handle the outgoing SMS the Connector will:
 
     >[!TIP] You can skip the above steps if you are using the Twilio Mock Mode.
 
-7. **Create New Connector in Avaya Infinity™**
+6. **Create New Connector in Avaya Infinity™**
 
-   In Avaya Infinity™ Admin Console, create a new connector and provide the Avaya Infinity™ Callback URL noted above as the `Webhook Callback URL`. (For example: `https://my-connector.com/callbacks/avaya/infinity/sms`)
+    Perform the following steps in Avaya Infinity™ Admin Console:
 
-   If secured webhook is desired, you can provide the `Webhook Secret` as well.
+    - In Avaya Infinity™ Admin Console, create a new connector and provide the Avaya Infinity™ Callback URL noted above as the `Webhook Callback URL`. (For example: `https://my-connector.com/callbacks/avaya/infinity/sms`)
+    - If you want to secure the webhook, specify a `Webhook Secret`.
+    - Create client credentials for the connector.
 
-   Also create client credentials for the connector.
-
-   Note down the following details once the connector and client credentials are created:
-   - `Connector Id`
-   - `Client Id`
-   - `Client Secret`
-   - `Webhook Secret` (optional: if secured webhook is desired)
-   - `Account Id`
+    Note down the following details once the connector and client credentials are created:
+    - `Connector Id`
+    - `Client Id`
+    - `Client Secret`
+    - `Webhook Secret` (optional: required if secured webhook is desired)
+    - `Account Id`
 
     See the [Admin Console documentation](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) for more details.
 
-8. **Configure Twilio number in Avaya Infinity™** Admin Console
+7. **Configure Twilio number in Avaya Infinity™** Admin Console
 
     In Avaya Infinity™ Admin Console, add the Twilio number in the 'Numbers' section, associate it with the connector, and set the desired routing treatment. Ensure the workflow, queue, and agents are configured to handle the SMS messages appropriately.
 
@@ -149,21 +147,27 @@ To handle the outgoing SMS the Connector will:
 
     See the [Admin Console documentation](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) for more details.
 
-9. **Update Connector Configuration**
+8. **Update Connector Configuration**
 
     Update the Connector Configuration with the Twilio and Avaya Infinity™ credentials noted above using the [Update Configuration](#update-configuration) API.
 
-    If you are using the Twilio Mock Mode, ensure the `twilio.isMockMode` is set to `true` in the Connector Configuration. Rest of the Twilio configurations can be set to empty values or any dummy values.
+    If you are using the Twilio Mock Mode, ensure the `twilio.isMockMode` is set to `true` in the Connector Configuration. Rest of the Twilio configurations can be set to empty values or any dummy values as they will be ignored.
 
-10. **Test SMS flow**
+9. **Test SMS flow**
+
+    Once the connector is configured, you can test the SMS flow. 
+
+    - Send an SMS to the Number configured in Avaya Infinity™ Admin Console.
+    - Verify if the message is sent to Avaya Infinity™ and if it is routed to the desired workflow, queue, and agent as per the `Numbers` configuration.
+    - If it is routed to an agent, the agent should be able to view the end user's message and reply back.
 
     **Testing with Twilio SMS**
 
-    Send an SMS to your Twilio number and verify it is treated as per your Avaya Infinity™ Number configuration. If it is routed to an agent, the agent should be able to view the message sent by the customer and reply back.
+    Send an SMS to your Twilio Number configured in Avaya Infinity™ Admin Console to test the SMS flow.
 
     **Testing with Mock Twilio Mode**
 
-    Invoke the [Twilio Callback URL](#twilio-sms-webhook) to simulate incoming SMS from the end user. Make sure the `to` field is set to the dummy number configured in Avaya Infinity™ Admin Console. Verify if the message is sent to Avaya Infinity™ and if it is routed to the desired workflow, queue, and agent as per the `Numbers` configuration.
+    Invoke the [Twilio Callback URL](#twilio-sms-webhook-endpoint) to simulate incoming SMS from the end user. Make sure the `to` field is set to the dummy number configured in Avaya Infinity™ Admin Console.
 
 ## API Reference
 
@@ -174,8 +178,8 @@ The Sample Connector Application exposes the following APIs:
 | [Health Check](#health-check) | GET | /api/health | Check if the application is running |
 | [Get Current Configuration](#get-current-configuration) | GET | /api/configs | Get the current configuration |
 | [Update Configuration](#update-configuration) | POST | /api/configs | Update the configuration |
-| [Twilio SMS Webhook](#twilio-sms-webhook) | POST | /callbacks/twilio/sms | Receive incoming SMS Event from Twilio. Twilio will invoke this endpoint when an end user sends an SMS to the Twilio number and this endpoint is configured in Twilio Console against the Twilio number. In Twilio Mock Mode, you can invoke this endpoint to simulate incoming SMS from the end user.|
-| [Avaya Infinity™ Webhook](#avaya-infinity-webhook) | POST | /callbacks/avaya/infinity/sms | Receive incoming SMS Event from Avaya Infinity™. Avaya Infinity™ will invoke this endpoint when the contact center sends an SMS for the end user using the Twilio number configured in Avaya Infinity™ Admin Console.|
+| [Twilio SMS Webhook](#twilio-sms-webhook-endpoint) | POST | /callbacks/twilio/sms | Receive incoming SMS Event from Twilio. Twilio will invoke this endpoint when an end user sends an SMS to the Twilio number and this endpoint is configured in Twilio Console against the Twilio number. In Twilio Mock Mode, you can invoke this endpoint to simulate incoming SMS from the end user.|
+| [Avaya Infinity™ Webhook](#avaya-infinity-webhook-endpoint) | POST | /callbacks/avaya/infinity/sms | Receive incoming SMS Event from Avaya Infinity™. Avaya Infinity™ will invoke this endpoint when the contact center sends an SMS for the end user using the Twilio number configured in Avaya Infinity™ Admin Console.|
 
 ### Health & Monitoring
 
@@ -294,6 +298,8 @@ cURL example:
 curl -X POST {{your-connector-hostname}}/callbacks/twilio/sms -H "Content-Type: application/x-www-form-urlencoded" -d 'Body=message from twilio&To=+912121212121&From=+18777777777'
 ```
 
+In the above example, the number in `To` field (+912121212121) is the Twilio Number configured in Avaya Infinity™ Admin Console. The number in `From` field (+18777777777) is the end user's number who sent the SMS.
+
 Response example:
 
 ```http
@@ -303,40 +309,61 @@ Response example:
 #### Avaya Infinity™ Webhook Endpoint
 
 ```http
-POST /callbacks/avaya/infinity/sms
+POST {{your-connector-hostname}}/callbacks/avaya/infinity/sms
 Content-Type: application/json
 ```
 
-cURL example:
+Avaya Infinity™ will invoke this endpoint for two events
+
+1. `health_check` event when the connector application is healthly and ready to receive events.
+2. `messages` event when the contact center sends records a message for the conversation session.
+   - `sender.type` is `agent` or `bot`: The connector will forward the message to Twilio.
+   - `sender.type` is `customer`: The connector will skip the message and not forward it to Twilio.
+
+cURL example of a messages event:
 
 ```curl
 curl -X POST {{your-connector-hostname}}/callbacks/avaya/infinity/sms -H "Content-Type: application/json" -d '{
-  "eventType": "MESSAGES",
-  "messageId": "004e0708206c0d3db4807g6bj7",
-  "accountId": "001d010540de0d3db4302f5fa8",
-  "conversationSessionId": "005e0708206c0d3db4807g6bj7",
-  "connectorId": "591c2529-c3a3-4062-a213-b239c18f543b",
+  "eventType": "messages",
+  "eventId": "9a68394c-46ca-43b0-8d7a-c0511c7dbe84",
+  "eventTimestamp": "2025-09-14T17:03:14.973161008Z",
+  "messageId": "049d01091481a36c2dfd6f3f4e",
+  "accountId": "001d0106666c6888cc999c111c",
+  "conversationSessionId": "028d0109148d0c42be45266207",
+  "connectorId": "a2a22a22-b66b-4444-a9a9-dd111d111d11",
   "channel": "text",
   "headers": {
-    "from": "+15076981583",
+    "from": "+912121212121",
     "to": [
-      "+919890494090"
+      "+18777777777"
     ]
   },
   "body": {
-    "text": "Hi agent from postman 01, using the azure instance of connector, how can I help you?"
+    "text": "Hi, how can I help you?"
   },
-  "sender" : {
-    "type": "AGENT"
+  "sender": {
+    "type": "agent"
   }
 }'
 ```
+
+In the above example, the key fields are:
+
+- `eventType`: `messages` : Indicates the event type.
+- `sender.type`: `agent` : Indicates the sender type.
+- `headers.from`: `+912121212121` : The Twilio Number configured in Avaya Infinity™ Admin Console from which the message needs to be sent.
+- `headers.to`: `+18777777777` : The end user's number to which the message needs to be sent.
+- `body.text`: `Hi, how can I help you?` : The message text.
+
+Details about the all the fields are available in the [Avaya Infinity™ Webhook Event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
 
 Response example:
 
 ```http
 200 OK
 ```
+
+Details about the `health_check` event are available in the [Avaya Infinity™ Webhook Event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
 
 ## Testing & Development
 
@@ -359,9 +386,13 @@ The sample connector application needs to receive callback requests from Avaya I
 
 ## Environment Variables
 
+You can start the connector application with desired Avaya Infinity™ and Twilio configurations by setting the environment variables in the `.env.dev` file. This way you need not call the [Update Configuration](#update-configuration) API to update the configurations everytime the application is started.
+
+The following environment variables are available:
+
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `PORT` | No | Server port (default: 3000) |
+| `PORT` | No | Server port |
 | `ENV` | No | Environment mode (development, mock_twilio, etc.) |
 | `TWILIO_ACCOUNT_SID` | Yes* | Twilio Account SID (starts with AC) |
 | `TWILIO_AUTH_TOKEN` | No | Twilio authentication token. This is required if Twilio API Key is not available |
@@ -374,13 +405,6 @@ The sample connector application needs to receive callback requests from Avaya I
 | `AVAYA_INFINITY_WEBHOOK_SECRET` | No | Secret for webhook signature validation |
 
 *Required unless running in mock mode
-
-## Code Structure
-
-- **Controllers**: Handle incoming webhook requests
-- **Services**: Manage communication with external APIs
-- **Middleware**: Handle logging and Avaya Infinity™ webhook event signature validation
-- **Configuration**: Manage dynamic settings and credentials
 
 ## Troubleshooting
 
@@ -399,12 +423,11 @@ Few common issues and their solutions:
 
 - Check if the server is running on the correct port
 - Verify no other application is using the same port
-- Use `lsof -i :8081` to check port usage
+- Use commands like `lsof -i :8081` to check port usage
 
 #### "Invalid signature" errors
 
-- Verify webhook secret matches Avaya Infinity™ configuration
-- Check webhook URL is correctly configured in Avaya Infinity™
+- Verify webhook secret configured in the connector application matches the `Webhook Secret` configured in the Connector Configuration in Avaya Infinity™ Admin Console
 
 #### "Access token expired" errors"
 
@@ -418,6 +441,43 @@ Enable detailed logging by setting:
 ```env
 DEBUG=express:*
 ```
+
+## Code Structure
+
+```text
+  avaya-infinity-twilio-sms-connector/  
+  ├── README.md                           # This file  
+  ├── LICENSE                             # Project license  
+  ├── package.json                        # Dependencies & npm scripts  
+  │  
+  └── src/                                # Source code directory  
+      ├── app.js                          # Main application entry point  
+      ├── config/                         # Configuration management  
+      │   └── environment.js             # Environment variables & settings  
+      ├── controllers/                    # Request handlers
+      │   ├── avayaInfinityController.js  # Handles Avaya Infinity™ webhooks callback requests   
+      │   ├── twilioController.js         # Handles Twilio webhooks callback requests
+      │   └── configController.js         # Configuration API endpoints   
+      ├── services/                       # External API integration layer  
+      │   ├── avayaInfinityService.js     # Avaya Infinity™ API client  
+      │   ├── avayaTokenService.js        # Avaya Infinity™ Auth token management  
+      │   └── twilioService.js            # Twilio API client  
+      └── middleware/                     # Express middleware components  
+          ├── avayaSignatureValidation.js # Security middleware  
+          └── logger.js                   # Logging middleware  
+```
+
+If you wish to connect to any other messaging platform, instead of Twilio, replace the code in the following files:
+
+| File | Changes Required |
+|------|------------------|
+| `src/controllers/twilioController.js` | Handle incoming SMS from the new messaging platform |
+| `src/services/twilioService.js` | Handle outgoing SMS to the new messaging platform |
+| `src/controllers/avayaInfinityController.js` | Call the service of the new messaging platform |
+| `src/config/environment.js` | Update the environment variables for the new messaging platform |
+| `.env.dev` | Update the environment variables for the new messaging platform |
+
+Refer the [Twilio SMS Connector](https://github.com/Avaya-Infinity/sample-applications/tree/main/avaya-infinity-twilio-sms-connector) for more details.
 
 ## License
 
