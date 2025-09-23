@@ -99,7 +99,7 @@ To handle the outgoing SMS the Connector will:
 
 4. **Deploy the application:**
 
-    For both Avaya Infinity™ and Twilio to be able call this connector application's endpoints to send message events, you need to deploy the application to a publically accessible URL.
+    For both Avaya Infinity™ and Twilio to be able call this connector application's endpoints to send message events, you need to deploy the application to a publicly accessible URL.
 
     However, you can use a tool like [ngrok](https://ngrok.com/) to create a public URL for your local server to test the application locally.
 
@@ -315,7 +315,7 @@ Content-Type: application/json
 
 Avaya Infinity™ will invoke this endpoint for two events
 
-1. `health_check` event when the connector application is healthly and ready to receive events.
+1. `health_check` event when the connector application is healthy and ready to receive events.
 2. `messages` event when the contact center sends records a message for the conversation session.
    - `sender.type` is `agent` or `bot`: The connector will forward the message to Twilio.
    - `sender.type` is `customer`: The connector will skip the message and not forward it to Twilio.
@@ -382,11 +382,11 @@ Each step in the [Quick Start](#quick-start) section has information to enable T
 
 ### Running the Sample Application without Deploying it to a Publicly Accessible Location
 
-The sample connector application needs to receive callback requests from Avaya Infinity™ and Twilio. If you want to run the sample application without deploying it to a publically accessible location, you can use tools like [ngrok](https://ngrok.com/) to create a public URL for your local server.
+The sample connector application needs to receive callback requests from Avaya Infinity™ and Twilio. If you want to run the sample application without deploying it to a publicly accessible location, you can use tools like [ngrok](https://ngrok.com/) to create a public URL for your local server.
 
 ## Environment Variables
 
-You can start the connector application with desired Avaya Infinity™ and Twilio configurations by setting the environment variables in the `.env.dev` file. This way you need not call the [Update Configuration](#update-configuration) API to update the configurations everytime the application is started.
+You can start the connector application with desired Avaya Infinity™ and Twilio configurations by setting the environment variables in the `.env.dev` file. This way you need not call the [Update Configuration](#update-configuration) API to update the configurations every time the application is started.
 
 The following environment variables are available:
 
