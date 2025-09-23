@@ -25,7 +25,7 @@ You can refer this application code for building your own connector application 
 
 The flow of incoming SMS from the end user to the contact center is as follows:
 
-[ End User ] → [ Twilio ] → [ Connector ] → [ Avaya Infinity™ ]
+[ End User ] → [ Twilio ] → [ This Connector ] → [ Avaya Infinity™ ]
 
 To handle the incoming SMS the Connector will:
 
@@ -36,7 +36,7 @@ To handle the incoming SMS the Connector will:
 
 The flow of outgoing SMS from the contact center to the end user is as follows:
 
-[ Avaya Infinity™ ] → [ Connector ] → [ Twilio ] → [ End User ]
+[ Avaya Infinity™ ] → [ This Connector ] → [ Twilio ] → [ End User ]
 
 To handle the outgoing SMS the Connector will:
 
