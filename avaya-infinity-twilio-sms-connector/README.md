@@ -11,9 +11,11 @@ To bridge these platforms, you need a small **connector** application. The conne
 
 This sample application demonstrates how to build such a connector, specifically integrating Avaya Infinity™ with [Twilio SMS Messaging](https://www.twilio.com/en-us/messaging/channels/sms).
 
-> [!TIP] Find detailed Custom Messaging documentation in the [Avaya Developer Portal](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
+> [!TIP]
+> Find detailed Custom Messaging documentation in the [Avaya Developer Portal](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
 
-> [!IMPORTANT] This sample application is intended to be used as a reference for building your own connector application. It is not intended to be used in a production environment.
+> [!IMPORTANT]
+> This sample application is intended to be used as a reference for building your own connector application. It is not intended to be used in a production environment.
 
 You can refer this application code for building your own connector application and connect to any other messaging platform. Refer the [Code Structure](#code-structure) section for more details.
 
@@ -120,7 +122,8 @@ To handle the outgoing SMS the Connector will:
     - `Twilio API Key SID` (optional: if Twilio API Key is created)
     - `Twilio API Key Secret` (optional: if Twilio API Key is created)
 
-    >[!TIP] You can skip the above steps if you are using the Twilio Mock Mode.
+    > [!TIP]
+    > You can skip the above steps if you are using the Twilio Mock Mode.
 
 6. **Create New Connector in Avaya Infinity™**
 
