@@ -465,8 +465,8 @@ DEBUG=express:*
       │   ├── avayaInfinityService.js     # Avaya Infinity™ API client  
       │   ├── avayaTokenService.js        # Avaya Infinity™ Auth token management  
       │   └── twilioService.js            # Twilio API client  
-      └── middleware/                     # Express middleware components  
-          ├── avayaSignatureValidation.js # Security middleware  
+      └── middleware/                     # Middleware components  
+          ├── avayaSignatureValidation.js # Avaya Infinity™ webhook signature validation  
           └── logger.js                   # Logging middleware  
 ```
 
