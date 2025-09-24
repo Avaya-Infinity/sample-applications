@@ -122,7 +122,7 @@ To handle the outgoing SMS the Connector will:
     - `Twilio API Key SID` (optional: if Twilio API Key is created)
     - `Twilio API Key Secret` (optional: if Twilio API Key is created)
 
-    > [!TIP]
+    > ⓘ **Mock Mode Tip**  
     > You can skip the above steps if you are using the Twilio Mock Mode.
 
 6. **Create New Connector in Avaya Infinity™**
@@ -146,7 +146,8 @@ To handle the outgoing SMS the Connector will:
 
     In Avaya Infinity™ Admin Console, add the Twilio number in the 'Numbers' section, associate it with the connector, and set the desired routing treatment. Ensure the workflow, queue, and agents are configured to handle the SMS messages appropriately.
 
-    If your are using the Twilio Mock Mode, you can still follow the above steps. Just add a dummy number instead of the Twilio number.
+    > ⓘ **Mock Mode Tip**  
+    > If your are using the Twilio Mock Mode, you can still follow the above steps. Just add a dummy number instead of the Twilio number.
 
     See the [Admin Console documentation](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) for more details.
 
@@ -154,7 +155,9 @@ To handle the outgoing SMS the Connector will:
 
     Update the Connector Configuration with the Twilio and Avaya Infinity™ credentials noted above using the [Update Configuration](#update-configuration) API.
 
-    If you are using the Twilio Mock Mode, ensure the `twilio.isMockMode` is set to `true` in the Connector Configuration. Rest of the Twilio configurations can be set to empty values or any dummy values as they will be ignored.
+    > ⓘ **Mock Mode Tip**  
+    > If you are using the Twilio Mock Mode, ensure the `twilio.isMockMode` is set to `true` in the Connector Configuration.
+    > Rest of the Twilio configurations can be set to empty values or any dummy values as they will be ignored.
 
 9. **Test SMS flow**
 
@@ -164,13 +167,9 @@ To handle the outgoing SMS the Connector will:
     - Verify if the message is sent to Avaya Infinity™ and if it is routed to the desired workflow, queue, and agent as per the `Numbers` configuration.
     - If it is routed to an agent, the agent should be able to view the end user's message and reply back.
 
-    **Testing with Twilio SMS**
-
-    Send an SMS to your Twilio Number configured in Avaya Infinity™ Admin Console to test the SMS flow.
-
-    **Testing with Mock Twilio Mode**
-
-    Invoke the [Twilio Callback URL](#twilio-sms-webhook-endpoint) to simulate incoming SMS from the end user. Make sure the `to` field is set to the dummy number configured in Avaya Infinity™ Admin Console.
+    > ⓘ **Mock Mode Tip**  
+    > Invoke the [Twilio Callback URL](#twilio-sms-webhook-endpoint) to simulate incoming SMS from the end user.
+    > Make sure the `to` field is set to the dummy number configured in Avaya Infinity™ Admin Console.
 
 ## API Reference
 
@@ -456,7 +455,7 @@ DEBUG=express:*
   └── src/                                # Source code directory  
       ├── app.js                          # Main application entry point  
       ├── config/                         # Configuration management  
-      │   └── environment.js             # Environment variables & settings  
+      │   └── environment.js              # Environment variables & settings  
       ├── controllers/                    # Request handlers
       │   ├── avayaInfinityController.js  # Handles Avaya Infinity™ webhooks callback requests   
       │   ├── twilioController.js         # Handles Twilio webhooks callback requests
