@@ -12,7 +12,7 @@ To bridge these platforms, you need a small **connector** application. The conne
 This sample application demonstrates how to build such a connector, specifically integrating Avaya Infinity™ with [Twilio SMS Messaging](https://www.twilio.com/en-us/messaging/channels/sms).
 
 > [!TIP]
-> Find detailed Custom Messaging documentation in the [Avaya Developer Portal](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
+> Find detailed Custom Messaging documentation in the [Avaya Developer Portal](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview).
 
 > [!IMPORTANT]
 > This sample application is intended to be used as a reference for building your own connector application. It is not intended to be used in a production environment.
@@ -30,7 +30,7 @@ The flow of incoming SMS from the end user to the contact center is as follows:
 To handle the incoming SMS the Connector will:
 
 1. Expose a webhook endpoint to receive SMS from Twilio and configure the webhook URL in Twilio Console against the Twilio Number
-2. When an end user sends an SMS to the Twilio number, the connector will receive it as a Webhook event on the above webhook endpoint, process it and forward it to Avaya Infinity™ using the [`Send Message`](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) API.
+2. When an end user sends an SMS to the Twilio number, the connector will receive it as a Webhook event on the above webhook endpoint, process it and forward it to Avaya Infinity™ using the [`Send Message`](https://developers.avayacloud.com/avaya-infinity/reference/senddigitalasyncmessage) API.
 
 ### Handle Outgoing SMS to (Contact Center → End User)
 
@@ -41,7 +41,7 @@ The flow of outgoing SMS from the contact center to the end user is as follows:
 To handle the outgoing SMS the Connector will:
 
 1. Expose a webhook endpoint to receive SMS from Avaya Infinity™ and configure the webhook URL in Avaya Infinity™ Admin Console in the Connector Configuration
-2. When the contact center sends an SMS for the end user using the Twilio number, the connector will receive the SMS as a Webhook event on the above webhook endpoint. Process the [`messages` event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) it and forward it to Twilio using Twilio APIs for sending SMS.
+2. When the contact center sends an SMS for the end user using the Twilio number, the connector will receive the SMS as a Webhook event on the above webhook endpoint. Process the [`messages` event](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#messages-event) it and forward it to Twilio using Twilio APIs for sending SMS.
 
 ### Additional Features
 
@@ -140,7 +140,7 @@ To handle the outgoing SMS the Connector will:
     - `Webhook Secret` (optional: required if secured webhook is desired)
     - `Account Id`
 
-    See the [Admin Console documentation](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) for more details.
+    See the [Admin Configuration Guide](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#adding-a-connector) for more details.
 
 7. **Configure Twilio number in Avaya Infinity™** Admin Console
 
@@ -149,7 +149,7 @@ To handle the outgoing SMS the Connector will:
     > ⓘ **Mock Mode Tip**  
     > If your are using the Twilio Mock Mode, you can still follow the above steps. Just add a dummy number instead of the Twilio number.
 
-    See the [Admin Console documentation](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd) for more details.
+    See the [Admin Configuration Guide](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#configuring-the-sms-number) for more details.
 
 8. **Update Connector Configuration**
 
@@ -357,7 +357,7 @@ In the above example, the key fields are:
 - `headers.to`: `+18777777777` : The end user's number to which the message needs to be sent.
 - `body.text`: `Hi, how can I help you?` : The message text.
 
-Details about the all the fields are available in the [Avaya Infinity™ Webhook Event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
+Details about the all the fields are available in the [Avaya Infinity™ Webhook Event](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#messages-event).
 
 Response example:
 
@@ -365,7 +365,7 @@ Response example:
 200 OK
 ```
 
-Details about the `health_check` event are available in the [Avaya Infinity™ Webhook Event](https://developer.avaya.com/en/docs/infinity-platform/custom-messaging/tbd).
+Details about the `health_check` event are available in the [Avaya Infinity™ Webhook Event](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#health-check-event).
 
 ## Testing & Development
 
