@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OAuth SSO Demo - Iframe Example</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #f5f5f5;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        color: #111827;
+        margin-bottom: 10px;
+      }
+
+      .info {
+        background: #fef3c7;
+        border: 1px solid #fde68a;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+
+      .info h2 {
+        font-size: 16px;
+        color: #92400e;
+        margin-bottom: 8px;
+      }
+
+      .info p {
+        font-size: 14px;
+        color: #78350f;
+        line-height: 1.6;
+      }
+
+      .info code {
+        background: rgba(0, 0, 0, 0.1);
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: monospace;
+        font-size: 13px;
+      }
+
+      .sandbox-info {
+        background: #f0f9ff;
+        border: 1px solid #bfdbfe;
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+      }
+
+      .sandbox-info h2 {
+        font-size: 16px;
+        color: #1e40af;
+        margin-bottom: 10px;
+      }
+
+      .sandbox-info ul {
+        margin-left: 20px;
+        color: #1e40af;
+      }
+
+      .sandbox-info li {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+      .critical {
+        color: #dc2626;
+        font-weight: bold;
+      }
+
+      iframe {
+        width: 100%;
+        height: 800px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .code-block {
+        background: #1f2937;
+        color: #f9fafb;
+        padding: 15px;
+        border-radius: 6px;
+        font-family: monospace;
+        font-size: 13px;
+        overflow-x: auto;
+        margin: 15px 0;
+      }
+
+      .code-block .comment {
+        color: #9ca3af;
+      }
+
+      .code-block .tag {
+        color: #60a5fa;
+      }
+
+      .code-block .attr {
+        color: #f59e0b;
+      }
+
+      .code-block .value {
+        color: #34d399;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🔐 OAuth SSO Demo - Sandboxed Iframe Example</h1>
+        <p style="color: #6b7280; margin-top: 5px">
+          This page demonstrates how to properly embed the OAuth SSO element
+          in a sandboxed iframe
+        </p>
+      </header>
+
+      <div class="info">
+        <h2>⚠️ Important: Sandbox Permissions Required</h2>
+        <p>
+          InfinityElements are embedded using <code>srcdoc</code> (opaque origin) for security.
+          For popup-based OAuth to work, you must include these sandbox permissions.
+          The element runs in a fully isolated environment and does NOT communicate 
+          with the parent page.
+        </p>
+      </div>
+
+      <div class="sandbox-info">
+        <h2>🔒 Required Sandbox Permissions</h2>
+        <ul>
+          <li><code>allow-scripts</code> - Enables JavaScript execution</li>
+          <li><code>allow-popups</code> - Allows opening popup windows</li>
+          <li>
+            <code>allow-forms</code> - Enables OAuth form submissions and
+            redirects
+          </li>
+        </ul>
+        <p style="margin-top: 15px; font-size: 14px; color: #6b7280">
+          <strong>Note:</strong> The popup will inherit the sandbox
+          restrictions, but <code>allow-forms</code> enables OAuth redirects to
+          work properly. The popup communicates back to the iframe via
+          postMessage (same-origin).
+        </p>
+      </div>
+
+      <div class="sandbox-info">
+        <h2>🌐 Required Allow Permissions</h2>
+        <ul>
+          <li><code>local-network-access</code> - Allows network requests to local/private network resources</li>
+        </ul>
+        <p style="margin-top: 15px; font-size: 14px; color: #6b7280">
+          <strong>Note:</strong> The <code>allow</code> attribute controls feature policies
+          and is separate from the <code>sandbox</code> attribute. InfinityElements are embedded with 
+          <code>srcdoc</code>, giving the iframe an opaque origin (null origin) for maximum security.
+        </p>
+      </div>
+
+      <div class="sandbox-info">
+        <h2>📝 Iframe Code</h2>
+        <p style="margin-bottom: 10px; font-size: 14px">
+          Production configuration using <code>srcdoc</code> (opaque origin):
+        </p>
+        <div class="code-block">
+          <span class="comment">&lt;!-- OAuth SSO Demo InfinityElements --&gt;</span
+          ><br />
+          <span class="tag">&lt;iframe</span><br />
+          &nbsp;&nbsp;<span class="attr">sandbox</span>=<span class="value"
+            >"allow-scripts allow-popups allow-forms
+            allow-popups-to-escape-sandbox"</span
+          ><br />
+          &nbsp;&nbsp;<span class="attr">allow</span>=<span class="value"
+            >"local-network-access"</span
+          ><br />
+          &nbsp;&nbsp;<span class="attr">srcdoc</span>=<span class="value"
+            >"&lt;!-- element HTML content --&gt;"</span
+          ><br />
+          <span class="tag">&gt;&lt;/iframe&gt;</span>
+        </div>
+        <p style="margin-top: 10px; font-size: 13px; color: #6b7280">
+          <em>Note: This demo page uses <code>src="./index.html"</code> for demonstration purposes only. In production, components are embedded via <code>srcdoc</code>.</em>
+        </p>
+      </div>
+
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <h2 style="font-size: 18px; margin-bottom: 15px; color: #111827">
+          Live Demo (Sandboxed Iframe)
+        </h2>
+
+        <!-- OAuth SSO Demo InfinityElement in Sandboxed Iframe -->
+        <iframe
+          sandbox="allow-scripts allow-popups allow-forms allow-popups-to-escape-sandbox"
+          allow="local-network-access"
+          src="./index.html"
+          title="OAuth SSO Demo"
+        ></iframe>
+      </div>
+
+      <div
+        style="
+          margin-top: 20px;
+          padding: 15px;
+          background: #f9fafb;
+          border-radius: 6px;
+          border: 1px solid #e5e7eb;
+        "
+      >
+        <h3 style="font-size: 14px; color: #374151; margin-bottom: 8px">
+          🧪 Testing Instructions:
+        </h3>
+        <ol
+          style="
+            margin-left: 20px;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.8;
+          "
+        >
+          <li>Click any of the "Sign in" buttons in the iframe above</li>
+          <li>A popup window should open with Google's OAuth page</li>
+          <li>Complete the authentication in the popup</li>
+          <li>
+            The popup will close automatically and your profile will appear in
+            the iframe
+          </li>
+          <li>
+            You can test token validation and API quota features once
+            authenticated
+          </li>
+        </ol>
+
+        <div
+          style="
+            margin-top: 15px;
+            padding: 12px;
+            background: #fee2e2;
+            border-radius: 4px;
+            border: 1px solid #fecaca;
+          "
+        >
+          <p style="font-size: 13px; color: #991b1b; margin: 0">
+            <strong>⚠️ Troubleshooting:</strong> If the popup doesn't open or
+            OAuth fails, check:
+          </p>
+          <ul style="margin: 8px 0 0 20px; font-size: 13px; color: #991b1b">
+            <li>Browser allows popups for this domain</li>
+            <li>All three sandbox permissions are present in the iframe</li>
+            <li>Console for any security or CORS errors</li>
+            <li>
+              The redirect URI is configured in Google Console as
+              <code
+                style="
+                  background: rgba(0, 0, 0, 0.1);
+                  padding: 2px 4px;
+                  border-radius: 2px;
+                "
+                >callback.html</code
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OAuth Callback</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .message {
+        text-align: center;
+        padding: 20px;
+      }
+      .spinner {
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid white;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="message">
+      <div class="spinner"></div>
+      <p>Processing OAuth response...</p>
+      <p style="font-size: 12px; opacity: 0.8">
+        This window will close automatically.
+      </p>
+    </div>
+
+    <script>
+      (function () {
+        try {
+          // Check if we have a parent window (popup scenario)
+          if (!window.opener) {
+            console.warn(
+              "⚠️ No window.opener available - trying alternative communication"
+            );
+
+            // For sandboxed iframes, we might not have window.opener
+            // Try to communicate with parent window instead
+            if (window.parent && window.parent !== window) {
+              console.log("✅ Using window.parent for communication");
+            } else {
+              document.querySelector(".message p").textContent =
+                "Error: This page should be opened in a popup window.";
+              return;
+            }
+          }
+
+          const hash = window.location.hash;
+          const searchParams = new URLSearchParams(window.location.search);
+
+          let response = {
+            type: "OAUTH_RESPONSE",
+            token: null,
+            code: null,
+            error: null,
+            flowType: null,
+          };
+
+          // Check for errors first
+          if (hash.includes("error")) {
+            const hashParams = new URLSearchParams(hash.substring(1));
+            response.error = hashParams.get("error") || "Unknown error";
+          } else if (searchParams.has("error")) {
+            response.error = searchParams.get("error") || "Unknown error";
+          }
+          // Check for implicit flow (token in hash)
+          else if (hash.includes("access_token")) {
+            const hashParams = new URLSearchParams(hash.substring(1));
+            response.token = hashParams.get("access_token");
+            response.flowType = "implicit";
+          }
+          // Check for authorization code flow (code in query params)
+          else if (searchParams.has("code")) {
+            response.code = searchParams.get("code");
+            const state = searchParams.get("state");
+
+            // Determine flow type from state
+            if (state) {
+              if (state.startsWith("pkce_flow_")) {
+                response.flowType = "pkce";
+              } else if (state.startsWith("auth_code_flow_")) {
+                response.flowType = "authorization_code";
+              }
+            }
+          }
+
+          // Send the response to the parent window
+          if (window.opener) {
+            console.log("📤 Sending OAuth response via window.opener");
+            window.opener.postMessage(response, window.location.origin);
+          } else if (window.parent && window.parent !== window) {
+            console.log("📤 Sending OAuth response via window.parent");
+            window.parent.postMessage(response, "*");
+          } else {
+            console.error("❌ No communication method available");
+            document.querySelector(".message p").textContent =
+              "Error: Cannot communicate with parent window.";
+            return;
+          }
+
+          // Close the popup after a short delay
+          setTimeout(() => {
+            window.close();
+          }, 500);
+        } catch (error) {
+          console.error("Error processing OAuth callback:", error);
+          document.querySelector(".message p").textContent =
+            "Error processing OAuth response: " + error.message;
+        }
+      })();
+    </script>
+  </body>
+</html>
