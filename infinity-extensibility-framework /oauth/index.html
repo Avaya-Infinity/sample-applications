@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OAuth Demo - Web Component</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .page-header {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+        padding: 20px;
+      }
+
+      .page-header h1 {
+        font-size: 36px;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+
+      .page-header p {
+        font-size: 16px;
+        opacity: 0.9;
+      }
+
+      .element-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .footer {
+        text-align: center;
+        color: white;
+        margin-top: 40px;
+        padding: 20px;
+        opacity: 0.8;
+        font-size: 14px;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: underline;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .page-header h1 {
+          font-size: 28px;
+        }
+
+        body {
+          padding: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-header">
+      <h1>🔐 OAuth Testing Demo</h1>
+      <p>Popup-Based OAuth 2.0 Flow Testing with Keycloak</p>
+      <p style="font-size: 14px; opacity: 0.9; margin-top: 8px">
+        (Implicit & PKCE Flows)
+      </p>
+    </div>
+
+    <div class="element-container">
+      <!-- 
+        OAuth Demo Web Component 
+        The component includes default credentials but you can override them:
+        
+        <oauth-demo 
+          client-id="your-keycloak-client-id"
+          redirect-uri="http://localhost:5173/">
+        </oauth-demo>
+      -->
+      <oauth-demo></oauth-demo>
+    </div>
+
+    <div class="footer">
+      <p>
+        Built as a web component using React •
+        <a
+          href="https://www.keycloak.org/documentation"
+          target="_blank"
+        >
+          Keycloak Documentation
+        </a>
+      </p>
+      <p style="margin-top: 10px; font-size: 12px">
+        ⚠️ Important: Add this page URL to Valid Redirect URIs in Keycloak
+      </p>
+      <p style="margin-top: 8px; font-size: 11px; opacity: 0.8">
+        📌 Using popup-based OAuth for better UX • Make sure popups are enabled
+      </p>
+      <p style="margin-top: 8px; font-size: 11px; opacity: 0.8">
+        🔒 Iframe sandbox:
+        <code
+          style="
+            background: rgba(255, 255, 255, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+          "
+          >allow-scripts allow-popups allow-forms
+          allow-popups-to-escape-sandbox</code
+        >
+      </p>
+    </div>
+
+    <script type="module" src="/index.ts"></script>
+  </body>
+</html>

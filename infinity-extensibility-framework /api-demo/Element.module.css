@@ -1,0 +1,514 @@
+.container {
+  display: flex;
+  height: 100vh;
+  font-family: system-ui, -apple-system, sans-serif;
+  gap: 16px;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.leftColumn {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* Custom scrollbar for webkit browsers */
+.leftColumn::-webkit-scrollbar,
+.rightColumn::-webkit-scrollbar {
+  width: 8px;
+}
+
+.leftColumn::-webkit-scrollbar-track,
+.rightColumn::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.leftColumn::-webkit-scrollbar-thumb,
+.rightColumn::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.leftColumn::-webkit-scrollbar-thumb:hover,
+.rightColumn::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.rightColumn {
+  width: 400px;
+  overflow-y: auto;
+  padding-left: 16px;
+  border-left: 2px solid #e0e0e0;
+}
+
+.rightColumn .sectionTitle {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  padding: 16px 0 8px 0;
+  z-index: 10;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 16px;
+}
+
+.title {
+  margin: 0 0 16px 0;
+  font-size: 28px;
+  color: #333;
+}
+
+.connectionStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background-color: #e8f5e9;
+  border: 1px solid #4CAF50;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  font-size: 14px;
+  color: #2e7d32;
+}
+
+.statusIndicator {
+  color: #4CAF50;
+  font-size: 20px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.error {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  color: #c33;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dismissButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #c33;
+}
+
+.section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.sectionTitle {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: #333;
+  font-weight: 600;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.clearButton {
+  padding: 6px 12px;
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #666;
+}
+
+.button {
+  padding: 8px 16px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  width: 150px;
+}
+
+.interactionInfo {
+  background-color: #f9f9f9;
+  padding: 12px;
+  border-radius: 4px;
+}
+
+.infoRow {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.label {
+  font-weight: 600;
+  width: 120px;
+  color: #666;
+  font-size: 14px;
+}
+
+.value {
+  color: #333;
+  font-size: 14px;
+  flex: 1;
+}
+
+.statusBadge {
+  background-color: #2196F3;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.noInteraction {
+  text-align: center;
+  padding: 32px;
+  color: #999;
+}
+
+.hint {
+  font-size: 14px;
+  color: #bbb;
+  margin-top: 8px;
+}
+
+.eventList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.eventItem {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.eventHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.eventType {
+  font-weight: 600;
+  color: #2196F3;
+  font-size: 14px;
+}
+
+.eventTime {
+  font-size: 12px;
+  color: #999;
+}
+
+.eventData {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 12px;
+  overflow: auto;
+  max-height: 200px;
+  margin: 0;
+  font-family: monospace;
+}
+
+.noEvents {
+  text-align: center;
+  padding: 32px;
+  color: #999;
+}
+
+.description {
+  margin: 0 0 12px 0;
+  line-height: 1.6;
+  color: #666;
+  font-size: 14px;
+}
+
+.list {
+  margin: 0 0 12px 0;
+  padding-left: 24px;
+  line-height: 1.8;
+  color: #666;
+  font-size: 14px;
+}
+
+.apiResponse {
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 12px;
+  margin-top: 12px;
+}
+
+.apiResponseTitle {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.apiResponseData {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: 12px;
+  overflow: auto;
+  max-height: 300px;
+  margin: 0;
+  font-family: monospace;
+}
+
+.apiError {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: 4px;
+  padding: 12px;
+  color: #c33;
+  font-size: 14px;
+}
+
+.endButton {
+  background-color: #ef4444;
+}
+
+.callButton {
+  background-color: #4CAF50;
+}
+
+.acceptButton {
+  background-color: #10b981;
+}
+
+.dialpadButton {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 20px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+
+.buttonWithMargin {
+  margin-right: 8px;
+}
+
+.transferSection {
+  padding: 12px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.transferTitle {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.transferInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.transferInput {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.transferButton {
+  background-color: #FF9800;
+}
+
+.dialpadSection {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.dialpadTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dialpadGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  max-width: 240px;
+}
+
+.dialpadButtonDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.dialpadButtonActive {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.feedInputSection {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.feedInputTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.feedInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedInput {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.feedInputButton {
+  background-color: #9C27B0;
+  width: 100%;
+}
+
+.richMediaSection {
+  padding: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+.richMediaTitle {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.richMediaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.richMediaInput {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.richMediaButton {
+  background-color: #FF5722;
+  width: 100%;
+}
+
+/* New styles for API sections */
+.apiCategory {
+  margin-bottom: 32px;
+  padding: 20px;
+  background-color: #fafafa;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.categoryTitle {
+  margin: 0 0 8px 0;
+  font-size: 22px;
+  color: #1976D2;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.categoryDescription {
+  margin: 0 0 20px 0;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+  padding: 12px;
+  background-color: #fff;
+  border-left: 3px solid #1976D2;
+  border-radius: 4px;
+}
+
+.apiSection {
+  margin-bottom: 16px;
+  padding: 16px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.apiSectionTitle {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #424242;
+}
+
+.apiButtonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.fullWidthButton {
+  width: 100%;
+}
