@@ -113,7 +113,7 @@ To handle the outgoing SMS the Connector will:
 
 5. **Configure Twilio**
 
-    In Twilio Console, set the `Webhook URL` for your Twilio SMS number to the Callback URL for Twilio hosted ny the connector application noted above. (For example: `https://my-connector.com/callbacks/twilio/sms`)
+    In Twilio Console, set the `Webhook URL` for your Twilio SMS number to the Callback URL for Twilio hosted by the connector application noted above. (For example: `https://my-connector.com/callbacks/twilio/sms`)
 
     Note down the following details from Twilio Console:
     - `Twilio Number`
@@ -134,11 +134,9 @@ To handle the outgoing SMS the Connector will:
     - Create client credentials for the connector.
 
     Note down the following details once the connector and client credentials are created:
-    - `Connector Id`
     - `Client Id`
     - `Client Secret`
     - `Webhook Secret` (optional: required if secured webhook is desired)
-    - `Account Id`
 
     See the [Admin Configuration Guide](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#adding-a-connector) for more details.
 
@@ -147,7 +145,7 @@ To handle the outgoing SMS the Connector will:
     In Avaya Infinity™ Admin Console, add the Twilio number in the 'Numbers' section, associate it with the connector, and set the desired routing treatment. Ensure the workflow, queue, and agents are configured to handle the SMS messages appropriately.
 
     > ⓘ **Mock Mode Tip**  
-    > If your are using the Twilio Mock Mode, you can still follow the above steps. Just add a dummy number instead of the Twilio number.
+    > If you are using the Twilio Mock Mode, you can still follow the above steps. Just add a dummy number instead of the Twilio number.
 
     See the [Admin Configuration Guide](https://developers.avayacloud.com/avaya-infinity/docs/avaya-infinitytm-custom-messaging-overview#configuring-the-sms-number) for more details.
 
@@ -238,10 +236,8 @@ Response example:
         },
         "avaya": {
             "host": "https://avaya-infinity-hostname",
-            "accountId": "your_avaya_infinity_account_id",
             "clientId": "ava***ck",
             "clientSecret": "ava***ck",
-            "connectorId": "your_avaya_infinity_connector_id",
             "webhookSecret": "you***et",
             "isMockMode": false
         }
@@ -273,8 +269,6 @@ curl -X POST {{your-connector-hostname}}/api/configs -H "Content-Type: applicati
   },
   "avaya": {
     "host": "your-new-host.com",
-    "accountId": "your_account_id",
-    "connectorId": "your_connector_id",
     "clientId": "your_client_id",
     "clientSecret": "your_client_secret",
     "webhookSecret": "your_webhook_secret"
@@ -330,9 +324,7 @@ curl -X POST {{your-connector-hostname}}/callbacks/avaya/infinity/sms -H "Conten
   "eventId": "9a68394c-46ca-43b0-8d7a-c0511c7dbe84",
   "eventTimestamp": "2025-09-14T17:03:14.973161008Z",
   "messageId": "049d01091481a36c2dfd6f3f4e",
-  "accountId": "001d0106666c6888cc999c111c",
   "conversationSessionId": "028d0109148d0c42be45266207",
-  "connectorId": "a2a22a22-b66b-4444-a9a9-dd111d111d11",
   "channel": "text",
   "headers": {
     "from": "+912121212121",
@@ -403,7 +395,6 @@ The following environment variables are available:
 | `AVAYA_INFINITY_HOST` | Yes | Avaya Infinity™ platform hostname |
 | `AVAYA_INFINITY_CLIENT_ID` | Yes | Avaya Infinity™ OAuth client ID |
 | `AVAYA_INFINITY_CLIENT_SECRET` | Yes | Avaya Infinity™ OAuth client secret |
-| `AVAYA_INFINITY_CONNECTOR_ID` | Yes | Avaya Infinity™ connector identifier |
 | `AVAYA_INFINITY_WEBHOOK_SECRET` | No | Secret for webhook signature validation |
 
 *Required unless running in mock mode
