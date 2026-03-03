@@ -59,7 +59,7 @@ class AvayaInfinityService {
    * @throws {Error} If the request to Avaya Infinity fails.
    */
   async sendMessage(message) {
-    const url = `${this.baseUrl}/api/digital/messaging/v1/accounts/${config.avaya.accountId}/messages`;
+    const url = `${this.baseUrl}/api/digital/messaging/v1/messages`;
 
     const postData = JSON.stringify(message);
 

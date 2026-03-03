@@ -20,7 +20,6 @@ export const handleTwilioWebhook = async (req, res) => {
 
     // Forward message to Avaya Infinity
     const message = {
-      connectorId: config.avaya.connectorId,
       channel: 'text',
       headers: {
         from: twilioMessage.From,

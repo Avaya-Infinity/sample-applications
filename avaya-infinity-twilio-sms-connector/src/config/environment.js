@@ -35,10 +35,8 @@ export const config = {
   // Avaya Infinity configuration
   avaya: {
     host: process.env.AVAYA_INFINITY_HOST,
-    accountId: process.env.AVAYA_INFINITY_ACCOUNT_ID,
     clientId: process.env.AVAYA_INFINITY_CLIENT_ID,
     clientSecret: process.env.AVAYA_INFINITY_CLIENT_SECRET,
-    connectorId: process.env.AVAYA_INFINITY_CONNECTOR_ID,
     webhookSecret: process.env.AVAYA_INFINITY_WEBHOOK_SECRET,
     isMockMode: isAvayaMockMode
   }
@@ -113,10 +111,8 @@ export const getMaskedConfig = () => {
     },
     avaya: {
       host: config.avaya.host,
-      accountId: config.avaya.accountId,
       clientId: maskString(config.avaya.clientId),
       clientSecret: maskString(config.avaya.clientSecret),
-      connectorId: config.avaya.connectorId,
       webhookSecret: maskString(config.avaya.webhookSecret),
       isMockMode: config.avaya.isMockMode
     }
